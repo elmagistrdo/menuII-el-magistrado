@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Digital - El Magistrado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Merriweather', serif;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(139,0,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,69,0,0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0a 0%, #1a0000 50%, #8b0000 100%);
+            background-attachment: fixed;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #fff;
+            background: linear-gradient(135deg, #8b0000, #a50000, #ff6b35);
+            padding: 25px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            font-weight: 900;
+            font-size: 2.5em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 
+                0 8px 32px rgba(139, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        h1::before {
+            content: '🍽️';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+        }
+        
+        h1::after {
+            content: '🍽️';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+        }
+        
+        h2 {
+            color: #ff6b35;
+            text-align: center;
+            margin: 50px 0 40px 0;
+            font-size: 2.2em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 
+                2px 2px 4px rgba(0,0,0,0.7),
+                0 0 20px rgba(255,107,53,0.5);
+            position: relative;
+        }
+        
+        h2::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff6b35, #8b0000, #ff6b35, transparent);
+            border-radius: 2px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b0000, transparent);
+        }
+        
+        .menu-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            position: sticky;
+            top: 100px;
+            background: 
+                linear-gradient(135deg, rgba(10,10,10,0.95), rgba(139,0,0,0.1)),
+                radial-gradient(circle at center, rgba(255,107,53,0.1) 0%, transparent 70%);
+            backdrop-filter: blur(15px);
+            padding: 30px 25px;
+            z-index: 999;
+            border-radius: 25px;
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.4),
+                0 5px 15px rgba(139,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,107,53,0.2);
+        }
+        
+        .menu-btn {
+            background: linear-gradient(135deg, #8b0000, #a50000, #ff6b35);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Merriweather', serif;
+            border-radius: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 
+                0 6px 20px rgba(139, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+        
+        .menu-btn:hover::before {
+            left: 100%;
+        }
+        
+        .menu-btn:hover {
+            background: linear-gradient(135deg, #a50000, #cc0000, #ff8c42);
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 
+                0 12px 30px rgba(139, 0, 0, 0.6),
+                0 0 30px rgba(255,107,53,0.4);
+        }
+        
+        .menu-btn.active {
+            background: linear-gradient(135deg, #fff, #f8f8f8, #fff);
+            color: #8b0000;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 8px 25px rgba(255, 255, 255, 0.3),
+                0 0 20px rgba(255,107,53,0.3);
+        }
+        
+        .menu-section {
+            display: none;
+            max-width: 1300px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .menu-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .menu-item {
+            background: 
+                linear-gradient(135deg, rgba(20,20,20,0.95), rgba(40,20,20,0.9)),
+                radial-gradient(circle at top right, rgba(255,107,53,0.1) 0%, transparent 50%);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 40px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139,0,0,0.2), rgba(255,107,53,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            border-radius: 18px;
+        }
+        
+        .menu-item::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #8b0000, #ff6b35, #8b0000);
+            border-radius: 22px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .menu-item:hover::before {
+            opacity: 1;
+        }
+        
+        .menu-item:hover::after {
+            opacity: 1;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 
+                0 20px 60px rgba(139, 0, 0, 0.5),
+                0 0 40px rgba(255,107,53,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        
+        .item-name {
+            font-size: 1.4em;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .item-name::after {
+            content: '✨';
+            margin-left: 10px;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .menu-item:hover .item-name::after {
+            opacity: 1;
+        }
+        
+        .item-description {
+            font-size: 1em;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            line-height: 1.7;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .item-description::before {
+            content: '"';
+            color: #ff6b35;
+            font-size: 2em;
+            position: absolute;
+            left: -15px;
+            top: -10px;
+            opacity: 0.3;
+        }
+        
+        .item-price {
+            font-size: 1.6em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b35, #8b0000, #ff6b35);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: right;
+            position: relative;
+            z-index: 2;
+            text-shadow: none;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .item-price::before {
+            content: "$";
+            color: #fff;
+            margin-right: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        /* Efectos especiales para despertar apetito */
+        .menu-item:nth-child(odd) {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(139,0,0,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,107,53,0.1) 0%, transparent 50%);
+        }
+        
+        .menu-item:nth-child(even) {
+            background-image: 
+                radial-gradient(circle at 80% 80%, rgba(255,107,53,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 20%, rgba(139,0,0,0.1) 0%, transparent 50%);
+        }
+        
+        /* Animaciones sutiles de "respiración" */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .menu-item:hover {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+                padding: 20px;
+            }
+            
+            h1::before,
+            h1::after {
+                font-size: 0.6em;
+            }
+            
+            .menu-buttons {
+                position: static;
+                padding: 25px 20px;
+                margin-bottom: 40px;
+                gap: 15px;
+            }
+            
+            .menu-btn {
+                font-size: 13px;
+                padding: 15px 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .item-name {
+                font-size: 1.2em;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+                margin: 40px 0 30px 0;
+                letter-spacing: 2px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6em;
+                letter-spacing: 1px;
+            }
+            
+            .menu-btn {
+                font-size: 12px;
+                padding: 12px 18px;
+                letter-spacing: 1px;
+            }
+            
+            .menu-item {
+                padding: 25px;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+        
+        /* Efectos de partículas flotantes */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255,107,53,0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(139,0,0,0.3), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.3), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,107,53,0.3), transparent);
+            background-repeat: repeat;
+            background-size: 200px 150px;
+            animation: sparkle 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes sparkle {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-200px); }
+        }
+        
+        /* Scroll suave */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Efecto de brillo en el precio al hacer hover */
+        .menu-item:hover .item-price {
+            animation: shimmer 1s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { 
+                filter: drop-shadow(0 0 5px rgba(255,107,53,0.5)); 
+            }
+            to { 
+                filter: drop-shadow(0 0 15px rgba(255,107,53,0.8)); 
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>El Magistrado - Menú Digital</h1>
+    
+    <div class="menu-buttons">
+        <button class="menu-btn" onclick="showSection('infusiones', this)">☕ Infusiones</button>
+        <button class="menu-btn" onclick="showSection('desayunos', this)">🍳 Desayunos</button>
+        <button class="menu-btn" onclick="showSection('sandwiches', this)">🥪 Sandwiches</button>
+        <button class="menu-btn" onclick="showSection('ensaladas', this)">🥗 Ensaladas</button>
+        <button class="menu-btn" onclick="showSection('picadas', this)">🍟 Picadas</button>
+        <button class="menu-btn" onclick="showSection('lomitos', this)">🥩 Lomitos</button>
+        <button class="menu-btn" onclick="showSection('milanesas', this)">🍖 Milanesas</button>
+        <button class="menu-btn" onclick="showSection('hamburguesas', this)">🍔 Hamburguesas</button>
+        <button class="menu-btn" onclick="showSection('pizzas', this)">🍕 Pizzas</button>
+        <button class="menu-btn" onclick="showSection('bebidas', this)">🥤 Bebidas</button>
+        <button class="menu-btn" onclick="showSection('alcohol', this)">🍺 Con Alcohol</button>
+    </div>
+
+    <div id="infusiones" class="menu-section">
+        <h2>☕ Infusiones Artesanales</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Café Chico/Cortado</div>
+                <div class="item-description">Aromático café recién molido, perfecto para comenzar el día</div>
+                <div class="item-price">2200</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Café Mediano/Cortado</div>
+                <div class="item-description">Nuestra mezcla especial en porción generosa</div>
+                <div class="item-price">2300</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Cortado/Café Doble</div>
+                <div class="item-description">Intenso y cremoso, para los verdaderos amantes del café</div>
+                <div class="item-price">2500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Capuccino</div>
+                <div class="item-description">Espuma de leche sedosa con un toque de canela</div>
+                <div class="item-price">3600</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Submarino</div>
+                <div class="item-description">Chocolate caliente que se derrite en leche cremosa</div>
+                <div class="item-price">3600</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Té/Matecocido</div>
+                <div class="item-description">Infusiones tradicionales llenas de sabor y aroma</div>
+                <div class="item-price">2000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Adicional Leche Almendras</div>
+                <div class="item-description">Opción vegana cremosa y deliciosa</div>
+                <div class="item-price">800</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="desayunos" class="menu-section">
+        <h2>🍳 Desayunos que Despiertan los Sentidos</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Desayuno Tradicional</div>
+                <div class="item-description">El clásico que nunca falla: infusión humeante acompañada de medialunas doradas o tortillas caseras</div>
+                <div class="item-price">3900</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Desayuno Light</div>
+                <div class="item-description">Energía saludable: tostadas crujientes con queso crema, mermelada artesanal, jugo de naranja recién exprimido y ensalada de frutas de estación</div>
+                <div class="item-price">4900</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Desayuno Completo</div>
+                <div class="item-description">Todo lo que necesitas: tostadas doradas, queso crema cremoso, mermelada casera y jugo de naranja vitamínico</div>
+                <div class="item-price">4500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Desayuno Campestre</div>
+                <div class="item-description">Sabor rústico: pan de campo recién horneado con manteca fresca, dulce de leche artesanal y jugo de naranja natural</div>
+                <div class="item-price">5500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Desayuno Saludable</div>
+                <div class="item-description">Nutrición completa: tostada con palta cremosa, huevo perfecto, queso crema, jugo vitamínico y yogurt natural</div>
+                <div class="item-price">5700</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Sin Harina</div>
+                <div class="item-description">Proteínas puras: jamón cocido premium, queso selecto, huevos revueltos esponjosos y jugo de naranja fresco</div>
+                <div class="item-price">5700</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Desayuno Magistrado</div>
+                <div class="item-description">Nuestra especialidad: medio tostado de jamón y queso, medialunas tibias, ensalada de frutas y jugo exprimido</div>
+                <div class="item-price">6500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Americano</div>
+                <div class="item-description">El desayuno completo definitivo: tostadas, jamón cocido, queso premium, huevos revueltos cremosos, mermelada, queso crema, jugo y yogurt</div>
+                <div class="item-price">7700</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sandwiches" class="menu-section">
+        <h2>🥪 Sandwiches Irresistibles</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Tostado Jamón y Queso (Miga)</div>
+                <div class="item-description">El clásico perfecto: pan de miga tostado con jamón cocido y queso derretido</div>
+                <div class="item-price">4800</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Sandwich Jamón y Queso (Árabe)</div>
+                <div class="item-description">En suave pan árabe, jamón cocido premium y queso que se derrite en tu boca</div>
+                <div class="item-price">5000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Sandwich de Jamón Crudo</div>
+                <div class="item-description">Sabor gourmet: jamón crudo selecto, queso cremoso, tomate fresco y mayonesa casera</div>
+                <div class="item-price">6500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Sandwich de Ternera</div>
+                <div class="item-description">Carne tierna y jugosa con queso derretido, tomate maduro y mayonesa artesanal</div>
+                <div class="item-price">6500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Center</div>
+                <div class="item-description">El indulgente: jamón cocido, queso doble, gratinado dorado, aceitunas y huevo cremoso</div>
+                <div class="item-price">8000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Center de Ternera</div>
+                <div class="item-description">Ternera jugosa, queso fundido, tomate fresco, gratinado crujiente, aceitunas y huevo</div>
+                <div class="item-price">9000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Center de Jamón Crudo</div>
+                <div class="item-description">Jamón crudo premium, queso selecto, tomate, gratinado dorado, aceitunas y huevo perfecto</div>
+                <div class="item-price">9000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Mexicano</div>
+                <div class="item-description">El rey de los sandwiches: bife de lomo tierno, queso derretido, tomate, huevo, gratinado crujiente y aceitunas</div>
+                <div class="item-price">17500</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ensaladas" class="menu-section">
+        <h2>🥗 Ensaladas Frescas y Nutritivas</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Ensalada Completa</div>
+                <div class="item-description">Jardín en tu plato: lechuga crujiente, tomates maduros, huevo cocido, morrones coloridos, zanahoria rallada y jamón cocido</div>
+                <div class="item-price">6000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Ensalada Magistrado</div>
+                <div class="item-description">Nuestra creación especial: tomates jugosos, zanahoria fresca, rúcula picante, aceitunas y queso tybo con jamón crudo</div>
+                <div class="item-price">6500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Ensalada de Ternera</div>
+                <div class="item-description">Proteína premium: lechuga fresca, zanahoria crujiente, queso tybo cremoso, aceitunas y peceto tierno</div>
+                <div class="item-price">6500</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="picadas" class="menu-section">
+        <h2>🍟 Picadas para Compartir</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Porción de Papas Fritas</div>
+                <div class="item-description">Doradas, crujientes por fuera, tiernas por dentro. El acompañamiento perfecto</div>
+                <div class="item-price">4500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Papas Gratinadas</div>
+                <div class="item-description">Cremosas papas cubiertas con queso derretido y gratinadas hasta la perfección</div>
+                <div class="item-price">5500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Picada Para 2</div>
+                <div class="item-description">Selección perfecta: queso cremoso, jamón cocido, aceitunas mediterráneas, milanesa crujiente, papas doradas y mayonesa casera</div>
+                <div class="item-price">20000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Picada Grande</div>
+                <div class="item-description">El festín completo: queso premium, jamón cocido y crudo, aceitunas selectas, queso azul, calabresa especiada, milanesa, papas y mayonesa</div>
+                <div class="item-price">30000</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lomitos" class="menu-section">
+        <h2>🥩 Lomitos Jugosos y Sabrosos</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Lomito Simple</div>
+                <div class="item-description">Bife de lomo tierno a la plancha, lechuga fresca, tomate maduro y mayonesa cremosa</div>
+                <div class="item-price">10000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Lomito Completo</div>
+                <div class="item-description">El tradicional: bife de lomo jugoso, lechuga, tomate, queso derretido, jamón cocido, mayonesa, huevo y papas doradas</div>
+                <div class="item-price">11000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Lomito Riojano</div>
+                <div class="item-description">Sabor del norte: lomo tierno con salteado aromático de cebolla y morrones, lechuga, tomate, queso, huevo y papas crujientes</div>
+                <div class="item-price">12000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Lomito Magistrado</div>
+                <div class="item-description">Nuestra estrella: bife de lomo premium, queso tybo cremoso, jamón crudo selecto, rúcula fresca, tomate y papas</div>
+                <div class="item-price">12000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Lomito al Roquefort</div>
+                <div class="item-description">Para paladares exigentes: lomo tierno, rúcula picante, tomate fresco, cremoso roquefort, huevo y papas</div>
+                <div class="item-price">12000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Lomo Simple al Plato</div>
+                <div class="item-description">Bife de lomo jugoso con queso tybo derretido, acompañado de papas fritas doradas o ensalada fresca</div>
+                <div class="item-price">10500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Lomo Completo al Plato</div>
+                <div class="item-description">Bife de lomo con lechuga, tomate, queso, jamón cocido, huevo perfecto y tu elección de papas o ensalada</div>
+                <div class="item-price">11500</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="milanesas" class="menu-section">
+        <h2>🍖 Milanesas Doradas y Crujientes</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Sandwich Milanesa Simple</div>
+                <div class="item-description">Milanesa dorada y crujiente, lechuga fresca, tomate maduro y mayonesa cremosa</div>
+                <div class="item-price">9000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Sandwich Milanesa Completa</div>
+                <div class="item-description">Milanesa perfecta con lechuga, tomate, queso derretido, jamón cocido, huevo y papas fritas doradas</div>
+                <div class="item-price">9700</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Milanesa Simple al Plato</div>
+                <div class="item-description">Milanesa dorada y crujiente acompañada de papas fritas o ensalada fresca</div>
+                <div class="item-price">9500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Milanesa Completa al plato</div>
+                <div class="item-description">Milanesa premium con queso fundido, jamón cocido, huevo cremoso y papas fritas o ensalada</div>
+                <div class="item-price">10000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Milanesa a Caballo</div>
+                <div class="item-description">La clásica argentina: milanesa crujiente coronada con huevo frito, papas fritas o ensalada</div>
+                <div class="item-price">10000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Milanesa Napolitana</div>
+                <div class="item-description">El favorito italiano: milanesa con salsa de tomate casera, queso derretido, jamón cocido, papas o ensalada</div>
+                <div class="item-price">10000</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hamburguesas" class="menu-section">
+        <h2>🍔 Hamburguesas Gourmet</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Hamburguesa Simple</div>
+                <div class="item-description">Medallón de carne jugoso a la parrilla, lechuga crujiente, tomate fresco y mayonesa cremosa</div>
+                <div class="item-price">6500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Hamburguesa Completa</div>
+                <div class="item-description">Medallón perfecto con lechuga, tomate, queso derretido, jamón cocido, huevo, mayonesa y papas fritas</div>
+                <div class="item-price">8000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Hamburguesa al Plato Especial</div>
+                <div class="item-description">Medallón gourmet con queso fundido, jamón cocido premium, huevo perfecto y papas fritas o ensalada</div>
+                <div class="item-price">8500</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pizzas" class="menu-section">
+        <h2>🍕 Pizzas Artesanales</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Pizza Muzarella</div>
+                <div class="item-description">La clásica perfecta: muzarella cremosa derretida, aceitunas mediterráneas y orégano aromático</div>
+                <div class="item-price">11000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Pizza Especial</div>
+                <div class="item-description">Combinación premiada: muzarella, jamón cocido jugoso, morrones coloridos, huevos cremosos, aceitunas y orégano</div>
+                <div class="item-price">12000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Pizza Fugazzeta</div>
+                <div class="item-description">Sabor tradicional: muzarella derretida, aceitunas selectas, cebolla caramelizada y orégano fresco</div>
+                <div class="item-price">12000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Pizza Napolitana</div>
+                <div class="item-description">El gusto italiano: muzarella cremosa, tomate fresco, queso extra, aceitunas y orégano aromático</div>
+                <div class="item-price">12000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Pizza Calabreza</div>
+                <div class="item-description">Sabor intenso: muzarella, aceitunas negras, calabresa especiada, queso cremoso y orégano</div>
+                <div class="item-price">14000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Pizza Rúcula</div>
+                <div class="item-description">Frescura gourmet: muzarella suave, rúcula fresca y picante, aceitunas y orégano</div>
+                <div class="item-price">14000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Pizza Roquefort</div>
+                <div class="item-description">Para paladares sofisticados: muzarella cremosa, roquefort intenso, aceitunas y orégano</div>
+                <div class="item-price">14000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Pizza 4 Quesos</div>
+                <div class="item-description">El paraíso del queso: muzarella, roquefort cremoso, parmesano añejo, tybo suave, aceitunas y orégano</div>
+                <div class="item-price">14000</div>
+            </div>
+        </div>
+        
+        <h2>🍕 Media Pizzas</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza Muzarella</div>
+                <div class="item-description">Porción perfecta de nuestra clásica muzarella</div>
+                <div class="item-price">6500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza Especial</div>
+                <div class="item-description">Media pizza con todos los sabores especiales</div>
+                <div class="item-price">7000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza Fugazzeta</div>
+                <div class="item-description">Tradición argentina en media pizza</div>
+                <div class="item-price">7000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza Napolitana</div>
+                <div class="item-description">Sabor italiano en porción individual</div>
+                <div class="item-price">7000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza Calabreza</div>
+                <div class="item-description">Intensidad especiada en media pizza</div>
+                <div class="item-price">7900</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza Rúcula</div>
+                <div class="item-description">Frescura gourmet en porción personal</div>
+                <div class="item-price">7900</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza Roquefort</div>
+                <div class="item-description">Sabor sofisticado en media pizza</div>
+                <div class="item-price">7900</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">1/2 Pizza 4 Quesos</div>
+                <div class="item-description">Cuatro quesos premium en porción ideal</div>
+                <div class="item-price">7900</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bebidas" class="menu-section">
+        <h2>🥤 Bebidas Refrescantes</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Gaseosa Chica</div>
+                <div class="item-description">Refrescante y burbujeante, el acompañamiento perfecto</div>
+                <div class="item-price">2500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Gaseosa 1 LT</div>
+                <div class="item-description">Para compartir o disfrutar sin límites</div>
+                <div class="item-price">4000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Agua Saborizada Chica</div>
+                <div class="item-description">Hidratación con sabor, ligera y refrescante</div>
+                <div class="item-price">2500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Agua Saborizada 1,5 LT</div>
+                <div class="item-description">Sabor suave y refrescante en formato familiar</div>
+                <div class="item-price">4000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Agua Mineral 500 CC</div>
+                <div class="item-description">Pureza cristalina para acompañar tu comida</div>
+                <div class="item-price">2000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Soda 500 CC</div>
+                <div class="item-description">Burbujas naturales, clásica y refrescante</div>
+                <div class="item-price">2000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Licuados</div>
+                <div class="item-description">Frutas frescas licuadas con leche cremosa, una explosión de sabor</div>
+                <div class="item-price">3500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Limonadas</div>
+                <div class="item-description">Limones frescos exprimidos con un toque de menta, súper refrescante</div>
+                <div class="item-price">3700</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Jugo de Naranja Exprimido</div>
+                <div class="item-description">Vitamina C pura, naranjas exprimidas al momento</div>
+                <div class="item-price">3500</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="alcohol" class="menu-section">
+        <h2>🍺 Bebidas con Alcohol</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="item-name">Heineken x 1 LT</div>
+                <div class="item-description">Cerveza premium importada, sabor único y refrescante</div>
+                <div class="item-price">7500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Imperial x 1 LT</div>
+                <div class="item-description">Clásica cerveza argentina, suave y perfecta para compartir</div>
+                <div class="item-price">6500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Salta Negra 1 LT</div>
+                <div class="item-description">Cerveza artesanal del norte, sabor intenso y carácter único</div>
+                <div class="item-price">6000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Miller x 1LT</div>
+                <div class="item-description">Cerveza americana suave, ligera y refrescante</div>
+                <div class="item-price">7000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Lata de Cerveza</div>
+                <div class="item-description">Porción individual, fría y perfecta</div>
+                <div class="item-price">4500</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Medida de Fernet</div>
+                <div class="item-description">El clásico argentino, amargo y con personalidad</div>
+                <div class="item-price">3000</div>
+            </div>
+            <div class="menu-item">
+                <div class="item-name">Tragos</div>
+                <div class="item-description">Cócteles preparados por nuestros bartenders, creatividad en cada sorbo</div>
+                <div class="item-price">6500</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId, clickedButton) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.menu-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remover clase active de todos los botones
+            const buttons = document.querySelectorAll('.menu-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Agregar clase active al botón presionado, si existe
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            } else {
+                // Si no hay clickedButton (porque se llamó al cargar la página),
+                // buscamos el botón correspondiente y lo activamos.
+                const defaultButton = document.querySelector(`.menu-btn[onclick*="showSection('${sectionId}')"]`);
+                if (defaultButton) {
+                    defaultButton.classList.add('active');
+                }
+            }
+            
+            // Scroll suave hacia arriba
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Mostrar la sección 'infusiones' por defecto al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('infusiones'); // Llama a la función para mostrar la primera sección
+        });
+    </script>
+</body>
+</html>
