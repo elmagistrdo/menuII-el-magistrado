@@ -336,29 +336,6 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         
-        /* Efectos especiales para despertar apetito */
-        .menu-item:nth-child(odd) {
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(139,0,0,0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,107,53,0.1) 0%, transparent 50%);
-        }
-        
-        .menu-item:nth-child(even) {
-            background-image: 
-                radial-gradient(circle at 80% 80%, rgba(255,107,53,0.15) 0%, transparent 50%),
-                radial-gradient(circle at 20% 20%, rgba(139,0,0,0.1) 0%, transparent 50%);
-        }
-        
-        /* Animaciones sutiles de "respiración" */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        
-        .menu-item:hover {
-            animation: breathe 4s ease-in-out infinite;
-        }
-        
         /* Responsive Design */
         @media (max-width: 768px) {
             body {
@@ -424,48 +401,9 @@
             }
         }
         
-        /* Efectos de partículas flotantes */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, rgba(255,107,53,0.3), transparent),
-                radial-gradient(2px 2px at 40px 70px, rgba(139,0,0,0.3), transparent),
-                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.3), transparent),
-                radial-gradient(1px 1px at 130px 80px, rgba(255,107,53,0.3), transparent);
-            background-repeat: repeat;
-            background-size: 200px 150px;
-            animation: sparkle 20s linear infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        @keyframes sparkle {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-200px); }
-        }
-        
         /* Scroll suave */
         html {
             scroll-behavior: smooth;
-        }
-        
-        /* Efecto de brillo en el precio al hacer hover */
-        .menu-item:hover .item-price {
-            animation: shimmer 1s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from { 
-                filter: drop-shadow(0 0 5px rgba(255,107,53,0.5)); 
-            }
-            to { 
-                filter: drop-shadow(0 0 15px rgba(255,107,53,0.8)); 
-            }
         }
     </style>
 </head>
@@ -486,7 +424,7 @@
         <button class="menu-btn" onclick="showSection('alcohol', this)">🍺 Con Alcohol</button>
     </div>
 
-    <div identificacion="infusiones" class="menu-section">
+    <div id="infusiones" class="menu-section">
         <h2>☕ Infusiones</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -520,7 +458,7 @@
         </div>
     </div>
 
-    <div identificacion="desayunos" class="menu-section">
+    <div id="desayunos" class="menu-section">
         <h2>🍳 Desayunos y meriendas que Despiertan los Sentidos</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -566,7 +504,7 @@
         </div>
     </div>
 
-    <div identificacion="sandwiches" class="menu-section">
+    <div id="sandwiches" class="menu-section">
         <h2>🥪 Sandwiches </h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -612,7 +550,7 @@
         </div>
     </div>
 
-    <div identificacion="ensaladas" class="menu-section">
+    <div id="ensaladas" class="menu-section">
         <h2>🥗 Ensaladas Frescas y Nutritivas</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -633,7 +571,7 @@
         </div>
     </div>
 
-    <div identificacion="picadas" class="menu-section">
+    <div id="picadas" class="menu-section">
         <h2>🍟 Picadas para Compartir</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -657,7 +595,7 @@
         </div>
     </div>
 
-    <div identificacion="lomitos" class="menu-section">
+    <div id="lomitos" class="menu-section">
         <h2>🥩 Lomitos </h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -698,7 +636,7 @@
         </div>
     </div>
 
-    <div identificacion="milanesas" class="menu-section">
+    <div id="milanesas" class="menu-section">
         <h2>🍖 Milanesas bien caseras </h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -734,7 +672,7 @@
         </div>
     </div>
 
-    <div identificacion="hamburguesas" class="menu-section">
+    <div id="hamburguesas" class="menu-section">
         <h2>🍔 Hamburguesas xl</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -755,7 +693,7 @@
         </div>
     </div>
 
-    <div identificacion="pizzas" class="menu-section">
+    <div id="pizzas" class="menu-section">
         <h2>🍕 Pizzas</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -837,7 +775,7 @@
         </div>
     </div>
 
-    <div identificacion="bebidas" class="menu-section">
+    <div id="bebidas" class="menu-section">
         <h2>🥤 Bebidas Refrescantes</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -879,7 +817,7 @@
         </div>
     </div>
 
-    <div identificacion="alcohol" class="menu-section">
+    <div id="alcohol" class="menu-section">
         <h2>🍺 Bebidas con Alcohol</h2>
         <div class="menu-grid">
             <div class="menu-item">
@@ -928,18 +866,14 @@
             });
             
             // Mostrar la sección seleccionada
-            document.getElementById(sectionId).classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
             
-            // Agregar clase active al botón presionado, si existe
+            // Agregar clase active al botón presionado
             if (clickedButton) {
                 clickedButton.classList.add('active');
-            } else {
-                // Si no hay clickedButton (porque se llamó al cargar la página),
-                // buscamos el botón correspondiente y lo activamos.
-                const defaultButton = document.querySelector(`.menu-btn[onclick*="showSection('${sectionId}')"]`);
-                if (defaultButton) {
-                    defaultButton.classList.add('active');
-                }
             }
             
             // Scroll suave hacia arriba
@@ -950,8 +884,13 @@
         }
         
         // Mostrar la sección 'infusiones' por defecto al cargar la página
-        document.addEventListener('DOMContentLoaded', () => {
-            showSection('infusiones'); // Llama a la función para mostrar la primera sección
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('infusiones');
+            // Activar el primer botón también
+            const firstButton = document.querySelector('.menu-btn');
+            if (firstButton) {
+                firstButton.classList.add('active');
+            }
         });
     </script>
 </body>
